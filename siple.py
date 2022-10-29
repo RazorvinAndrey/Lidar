@@ -1,5 +1,5 @@
 from rplidar import RPLidar
-lidar = RPLidar('COM3')
+lidar = RPLidar('COM9')
 
 max_distatnce = 0
 
