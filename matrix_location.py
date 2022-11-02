@@ -7,6 +7,8 @@ angle = np.linspace(-math.pi/2, math.pi/2, np.shape(scan)[0], endpoint=True)
 
 
 
+
+
 def trans(x,y,theta):
     T = np.array([[np.cos(theta), -np.sin(theta), x],
                   [np.sin(theta), np.cos(theta),  y],
