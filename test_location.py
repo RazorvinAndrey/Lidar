@@ -16,7 +16,7 @@ xl = 0.2
 yl = 0
 tetL = np.pi #угол лидара
 
-# функция для перемещения
+# функция для переобразования
 def transport(x, y, thet):
     Tx = np.array([[np.cos(thet), -np.sin(thet), x],
                   [np.sin(thet), np.cos(thet),  y],
