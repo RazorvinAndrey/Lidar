@@ -5,6 +5,7 @@ import serial
 import time
 import json
 
+# Setup the RPLida
 PORT_NAME = 'COM9'
 lidar = RPLidar(PORT_NAME, timeout=3)
 
@@ -13,7 +14,7 @@ scale_Y = [None]*361
 scale_X = [None]*361
 try:
     serialPort = serial.Serial('COM10', 115200)
-    for scan in lidar.iter_scans(max_buf_meas=500):# считываем данные с лидара и переводим в декартовую систему координат
+    for scan in lidar.iter_scans(max_buf_meas=500):
         scan_data = [None]*361
         scale_Y = [None]*361
         scale_X = [None]*361
@@ -31,6 +32,7 @@ try:
         if k == 0:
             k = 1
         distR = sumR / k
+        print("distR   ", distR)
         sumT = 0
         n = 0
         for j in range(80, 100):  # этот и следущий цикл считают расстояние впереди в диапазоне от  358 до 2
@@ -39,13 +41,14 @@ try:
                 n += 1
 
         if n == 0:
-            n = 1
+            n=1
         distT = sumT / n
+        print("distT   ", distT)
         if distT >= 1000: #проверяет может ли ехать прямо
             if distR > 1000 and distR < 1500: #если может ехать прямо, смотрит по расстянию справа и едет просто прямо
                 speedA = 150
                 speedB = 150
-            elif distR>1500: #едет направо
+            elif distR > 1500: #едет направо
                 speedA = 200
                 speedB = -200
             else: #едет налево
@@ -69,11 +72,3 @@ except KeyboardInterrupt:
 lidar.stop()
 lidar.stop_motor()
 lidar.disconnect()
-
-
-
-
-
-
-
-
