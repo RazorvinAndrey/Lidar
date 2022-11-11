@@ -16,21 +16,20 @@ Licensed under the MIT license.
 All text above must be included in any redistribution.
 """
 
-import os
 from math import cos, sin, pi, floor
 import pygame
 from rplidar import RPLidar
 
 # Set up pygame and the display
 pygame.init()
-lcd = pygame.display.set_mode((320,240))
+lcd = pygame.display.set_mode((1024,720))
 pygame.mouse.set_visible(False)
 lcd.fill((0,0,0))
 pygame.display.update()
 
 # Setup the RPLidar
 PORT_NAME = 'COM9'
-lidar = RPLidar(PORT_NAME, timeout=3, baudrate=256000)
+lidar = RPLidar(PORT_NAME, timeout=3)
 
 # used to scale data to fit on the screen
 max_distance = 0
@@ -46,7 +45,7 @@ def process_data(data):
             radians = angle * pi / 180.0
             x = distance * cos(radians)
             y = distance * sin(radians)
-            point = (160 + int(x / max_distance * 119), 120 + int(y / max_distance * 119))
+            point = (360 + int(x / max_distance * 300), 320 + int(y / max_distance * 300))
             lcd.set_at(point, pygame.Color(255, 255, 255))
     pygame.display.update()
 
@@ -54,7 +53,8 @@ def process_data(data):
 scan_data = [0]*360
 
 try:
-    for scan in lidar.iter_scans(max_buf_meas=1000):
+    for scan in lidar.iter_scans():
+        scan_data = [0] * 360
         for (_, angle, distance) in scan:
             scan_data[min([359, floor(angle)])] = distance
         process_data(scan_data)

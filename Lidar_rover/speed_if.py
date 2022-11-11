@@ -5,7 +5,7 @@ import serial
 import time
 import json
 
-# Setup the RPLida
+# Setup the RPLidar
 PORT_NAME = 'COM9'
 lidar = RPLidar(PORT_NAME, timeout=3)
 
